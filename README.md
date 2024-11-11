@@ -70,6 +70,7 @@ python3 main.py
 ### 3. 输出结果 / Output
 结果将保存为 `sentiment_analysis_results.csv`。
 数据可视化图表将保存为 `.png` 文件，例如 `sentiment_distribution.png`。
+
 Results will be saved as `sentiment_analysis_results.csv`.
 Visualization charts will be saved as `.png` files, e.g., `sentiment_distribution.png`.
 
