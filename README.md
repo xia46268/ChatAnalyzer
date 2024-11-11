@@ -11,11 +11,13 @@ ChatAnalyzer is a tool designed to analyze Chinese chat data, providing sentimen
 ## 功能简介 / Features
 
 ### 1. 数据预处理 / Data Preprocessing
+- 随机抽取聊天记录中的100（可自选）条进行分析。
 - 处理聊天记录中的文本（主要是中文的）、图片和表情包。
 - 支持过滤非文本消息，例如图片和表情包。
 - 自动修正时间格式并解析相关字段。
 
 Process chat logs, handling (mainly in Chinese) text, images, and emojis. 
+- Randomly select 100 (optional) chat records for analysis.
 - Supports filtering out non-text messages such as images and emojis.
 - Automatically corrects time formats and parses relevant fields.
 
