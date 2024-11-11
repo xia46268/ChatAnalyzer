@@ -69,5 +69,6 @@ Visualization charts will be saved as `.png` files, e.g., `sentiment_distributio
 
 
 
-## License
+## 许可 / License
+该项目已获得MIT许可——详情请参阅[许可](LICENSE)文件。
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
