@@ -1,35 +1,9 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*.so
-
-# Virtual environment
-myenv/
-venv/
-env/
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# Logs and temporary files
-*.log
-*.tmp
-*.swp
-.DS_Store
-
-# Test coverage and reports
-.pytest_cache/
-.coverage
-coverage.xml
-htmlcov/
-
-# Distribution / packaging
+# 忽略构建和分发相关的文件
 build/
 dist/
 *.egg-info/
+*.csv
 
-# IDE specific
-.idea/
-.vscode/
-*.iml
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
 
