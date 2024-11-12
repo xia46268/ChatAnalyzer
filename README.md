@@ -112,27 +112,32 @@ ChatAnalyzer provides the following three modes, and users can choose different 
 
 The data file naming and storage path are as follows:
 - `sample`
+  
   Enter the file name：`sample_data.csv`
   
   Storage path: Store the file in the same level directory as the command being run.
   
-- `request` 
+- `request`
+  
   Enter the file name：`full_data.csv`
+  
   Storage path: Also stored in the current directory, the API return result will be saved as `api_output.csv`.
   
-- `analyze` 
+- `analyze`
+  
   Enter the file name：`api_output.csv`
+  
   The analysis results are output as `final_analysis.csv` and the charts are saved as `.png` files.
 
 ---
 
 ### 3. 输出结果 / Output
-- 分析结果以易读格式输出，并支持生成以下图表：用户活跃时间分布图，用户情绪趋势图，用户月度消息分布图，词云图。
+分析结果以易读格式输出，并支持生成以下图表：用户活跃时间分布图，用户情绪趋势图，用户月度消息分布图，词云图。
 - 分析结果保存为 `.csv` 文件，例如 `final_analysis.csv`。
 - 可视化图表保存为 `.png` 文件，例如 `sentiment_distribution.png`。
 - 输出文件将存储在与输入文件相同的目录中。
 
-- The analysis results are output in an easy-to-read format and support the generation of the following charts: user activity time distribution chart, user sentiment trend chart, user monthly message distribution chart, word cloud chart.
+The analysis results are output in an easy-to-read format and support the generation of the following charts: user activity time distribution chart, user sentiment trend chart, user monthly message distribution chart, word cloud chart.
 - The analysis results are saved as a `.csv` file, for example `final_analysis.csv`.
 - The visual charts are saved as `.png` files, for example `sentiment_distribution.png`.
 - The output files will be stored in the same directory as the
