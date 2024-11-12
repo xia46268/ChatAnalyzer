@@ -1,9 +1,5 @@
-# 忽略构建和分发相关的文件
+*.egg-info/
 build/
 dist/
-*.egg-info/
-*.csv
-
-# Jupyter notebook checkpoints
 .ipynb_checkpoints/
 
