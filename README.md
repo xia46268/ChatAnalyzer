@@ -110,21 +110,21 @@ ChatAnalyzer provides the following three modes, and users can choose different 
   
   分析结果输出为 `final_analysis.csv`，图表保存为 `.png` 文件。
 
+
 - `sample`
   
-  输入文件名 / Enter the file name：`sample_data.csv`
-  
-  存放路径：将文件存储在运行命令的同级目录中。
-  
+  Enter the file name：`sample_data.csv`
+    
   Storage path: Store the file in the same level directory as the command being run.
   
 - `request` 
-  输入文件名 / Enter the file name：`full_data.csv`
-  存放路径：同样存储在当前目录中，API 返回结果将保存为 `api_output.csv`。
+  Enter the file name：`full_data.csv`
+
   Storage path: Also stored in the current directory, the API return result will be saved as `api_output.csv`.
+  
 - `analyze` 
-  输入文件名 / Enter the file name：`api_output.csv`
-  分析结果输出为 `final_analysis.csv`，图表保存为 `.png` 文件。
+  Enter the file name：`api_output.csv`
+
   The analysis results are output as `final_analysis.csv` and the charts are saved as `.png` files.
 
 ---
