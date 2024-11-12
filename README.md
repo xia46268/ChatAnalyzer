@@ -81,8 +81,10 @@ ChatAnalyzer provides the following three modes, and users can choose different 
   ```bash
   chatanalyzer request
   ```
-- `analyze`模式
-  分析从 API 返回的结果并生成数据统计和可视化。
+- `analyze`
+  
+  分析从 API 返回的结果并生成数据统计和可视化。Analyze the results returned from the API and generate data statistics and visualizations.
+  
    ```bash
   chatanalyzer analyze
   ``` 
@@ -90,6 +92,24 @@ ChatAnalyzer provides the following three modes, and users can choose different 
 ---
 
 ### 2. 数据文件命名和存储路径 / Data File Naming and Storage Path
+- `sample`
+  
+  输入文件名：`sample_data.csv`
+  
+  存放路径：将文件存储在运行命令的同级目录中。
+  
+- `request`
+  
+  输入文件名：`full_data.csv`
+  
+  存放路径：同样存储在当前目录中，API 返回结果将保存为 `api_output.csv`。
+
+- `analyze`
+  
+  输入文件名：`api_output.csv`
+  
+  分析结果输出为 `final_analysis.csv`，图表保存为 `.png` 文件。
+
 - `sample`
   
   输入文件名 / Enter the file name：`sample_data.csv`
