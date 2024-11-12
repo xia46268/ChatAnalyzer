@@ -4,6 +4,7 @@ import pandas as pd
 from itertools import cycle
 from matplotlib.colors import to_hex
 import matplotlib.cm as cm
+from wordcloud import WordCloud
 
 def assign_colors(df):
     """
@@ -19,6 +20,32 @@ def assign_colors(df):
     cmap = cm.get_cmap('tab10', len(unique_users))  # Use 'tab10' colormap for distinct colors
     colors = {user: to_hex(cmap(i)) for i, user in enumerate(unique_users)}
     return colors
+
+def generate_word_cloud(word_counts, output_path="word_cloud.png", colormap='coolwarm'):
+    """
+    Generate and display a word cloud from word frequencies.
+
+    Parameters:
+    - word_counts: Dictionary of word frequencies.
+    - output_path: Path to save the word cloud image.
+    - colormap: Colormap for word cloud color scheme.
+    """
+    wordcloud = WordCloud(
+        font_path="/System/Library/Fonts/STHeiti Light.ttc",  # 中文字体；Chinese
+        width=800,
+        height=400,
+        background_color='white',
+        colormap=colormap  
+    ).generate_from_frequencies(word_counts)
+
+    plt.figure(figsize=(10, 5))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.title("Word Cloud of Chat Content", fontsize=14)
+    plt.tight_layout()
+    plt.savefig(output_path)
+    plt.show()
+
 
 def plot_sentiment_trend(df, user_colors, output_path="sentiment_trend.png"):
     """

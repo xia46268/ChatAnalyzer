@@ -4,6 +4,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from tqdm import tqdm
+import jieba
+from wordcloud import WordCloud
+import re
+from collections import Counter
 from chatanalyzer.auth import BaiduAuth
 from chatanalyzer.data_preprocessing import load_and_preprocess_data 
 from chatanalyzer.visualization import (
@@ -12,7 +16,8 @@ from chatanalyzer.visualization import (
     plot_sentiment_volatility,
     plot_active_hours_distribution,
     plot_monthly_message_distribution,
-    plot_sentiment_distribution
+    plot_sentiment_distribution,
+    generate_word_cloud
 )
 
 def analyze_sentiment(access_token, text, retries=3, timeout=10):
@@ -201,8 +206,10 @@ def analyze_saved_results(input_path, analysis_output_path):
         Total_Words=('Text', lambda x: x.str.len().sum()),
         Avg_Words=('Text', lambda x: x.str.len().mean())
     )
-    user_stats.to_csv(analysis_output_path)
-    print(f"Analysis saved to {analysis_output_path}")
+    print("User Message Statistics (Text Only):\n", user_stats)
+    
+    # Calculate and display sentiment proportions
+    sentiment_proportion = calculate_sentiment_proportion(df)
 
     # 计算消息时间间隔；Calculate message interval
     df['Time_Diff'] = df.groupby('User')['StrTime'].diff().dt.total_seconds().div(60)  # 以分钟计算
@@ -211,11 +218,82 @@ def analyze_saved_results(input_path, analysis_output_path):
 
     # 计算破冰者和消失者；Calculate ice breakers and vanishers
     silence_break_stats = calculate_silence_breakers(df)
-    print("破冰者比例:\n", silence_break_stats['breaker_ratio'])
-    print("消失者比例:\n", silence_break_stats['vanish_ratio'])
+    print("Ice-breaker Ratio:\n", silence_break_stats['breaker_ratio'])
+    print("Vanisher Ratio::\n", silence_break_stats['vanish_ratio'])
 
     # 计算并打印情感波动；Calculate and print emotional variability
     variability = calculate_emotional_variability(df)
+
+    # 分词与词频分析；Chinese word segmentation and frequency analysis
+    word_counts = word_frequency_analysis(df)  # Capture word_counts from word_frequency_analysis
+
+    # 生成词云
+    generate_word_cloud(word_counts, output_path="word_cloud.png", colormap="viridis")
+
+def calculate_sentiment_proportion(df):
+    """
+    Calculate sentiment proportions for each user relative to their total words.
+
+    Parameters:
+    - df: DataFrame containing sentiment and user statistics.
+
+    Returns:
+    - sentiment_proportion: DataFrame showing sentiment proportions by user.
+    """
+    # Group by User and Sentiment, then calculate the count for each sentiment category
+    sentiment_counts = df.groupby('User')['Sentiment'].value_counts().unstack(fill_value=0)
+
+    # Retrieve Total_Words for each user
+    total_words = df.groupby('User')['Text'].apply(lambda x: x.str.len().count())
+
+    # Calculate proportions
+    sentiment_proportion = sentiment_counts.div(total_words, axis=0)
+    sentiment_proportion.columns = ['Negative_Proportion', 'Neutral_Proportion', 'Positive_Proportion']
+
+    print("\nSentiment Proportion by User (Relative to User's Message Count):\n", sentiment_proportion)
+
+    return sentiment_proportion
+
+def word_frequency_analysis(df):
+    """
+    Perform word frequency analysis and generate word cloud.
+
+    Parameters:
+    - df: DataFrame containing chat data.
+
+    Returns:
+    - word_counts: A dictionary of word frequencies.
+    """
+    all_text = ' '.join(df['Text'].dropna())
+    words = jieba.lcut(all_text)
+    
+    # 统计词频；statistical word frequency
+    word_counts = Counter(words)
+    common_words = word_counts.most_common(50)
+    print("\nTop 50 Common Words:\n", common_words)
+
+    # 特定词的统计；statistics for specific words
+    specific_word_stats(df, word="哈")
+    
+    # 用户输入特定词统计；user input specific word statistics
+    user_input_word = input("\nEnter a word to count its frequency: ")
+    specific_word_stats(df, word=user_input_word)
+    
+    return word_counts  # Return word_counts for further processing
+
+def specific_word_stats(df, word):
+    """
+    Count occurrences of a specific word across users and print results.
+
+    Parameters:
+    - df: DataFrame containing chat data.
+    - word: The specific word to count.
+    """
+    total_count = df['Text'].str.count(word).sum()
+    user_counts = df.groupby('User')['Text'].apply(lambda x: x.str.count(word).sum())
+    
+    print(f"\nTotal occurrences of '{word}': {total_count}")
+    print(f"Occurrences of '{word}' by user:\n{user_counts}")
 
 def calculate_silence_breakers(df):
     """
