@@ -68,28 +68,36 @@ ChatAnalyzer 提供以下三种模式，用户可以根据需求选择不同的�
 ChatAnalyzer provides the following three modes, and users can choose different analysis modes according to their needs:
 
 - `sample`
+
   进行小样本数据分析（随机抽取 100 条聊天记录）。A small sample of data was analyzed (100 randomly selected chat logs).
+  
   ```bash
   chatanalyzer sample
   ```
 - `request`
+  
   进行全量数据分析，将数据批量发送至百度 API。Perform full data analysis and send data to the Baidu API in batches.
+  
   ```bash
   chatanalyzer request
   ```
 - `analyze`模式
   分析从 API 返回的结果并生成数据统计和可视化。
- ```bash
+   ```bash
   chatanalyzer analyze
   ``` 
 
 ---
 
 ### 2. 数据文件命名和存储路径 / Data File Naming and Storage Path
-- `sample` 
+- `sample`
+  
   输入文件名 / Enter the file name：`sample_data.csv`
+  
   存放路径：将文件存储在运行命令的同级目录中。
+  
   Storage path: Store the file in the same level directory as the command being run.
+  
 - `request` 
   输入文件名 / Enter the file name：`full_data.csv`
   存放路径：同样存储在当前目录中，API 返回结果将保存为 `api_output.csv`。
