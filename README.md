@@ -37,11 +37,13 @@ Utilizes Baidu NLP API to classify the sentiment of each chat message (positive,
 - 生成用户情绪分布图，直观展示用户的情绪类别分布。
 - 绘制用户在不同时间段的活跃度分布图。
 - 生成用户的月度消息分布图。
+- 使用词云展示聊天中高频词汇。
 
 Plots user sentiment trends, showing sentiment volatility over time.  
 - Generates sentiment distribution charts to visualize user sentiment categories.  
 - Visualizes user activity during different time periods.  
-- Displays monthly message distribution for each user.
+- Displays monthly message distribution for each user.  
+- Generates word clouds to display high-frequency words in chats.
 
 ---
 
@@ -49,10 +51,12 @@ Plots user sentiment trends, showing sentiment volatility over time.
 - 统计用户的消息数量、总字数、平均字数。
 - 计算用户的情绪波动（正面与负面概率的标准差）。
 - 分析用户的消息时间间隔，识别“破冰者”和“消失者”。
+- 对特定关键词进行频率统计，例如“哈”。
 
 Calculates message count, total word count, and average word count per user.  
 - Measures user emotional variability (standard deviation of positive and negative probabilities).  
-- Analyzes message time intervals to identify "Ice Breakers" and "Vanishers."
+- Analyzes message time intervals to identify "Ice Breakers" and "Vanishers."  
+- Counts specific keywords' frequency, such as "ha."
 
 ---
 
@@ -68,17 +72,29 @@ pip install -r requirements.txt
 ### 2. 使用方法 / How to Use
 在 main.py 中设置聊天数据文件路径并运行：
 ```bash
-python3 main.py
+python3 main.py <mode>
 ```
+`<mode>` 参数选项 parameter option：
 
+- `sample`: 小样本分析 Small sample analysis
+- `request`: 全样本 API 请求 Full sample API request
+- `analyze`: 保存结果的全面分析 Comprehensive analysis of the results saved
 ---
 
 ### 3. 输出结果 / Output
-结果将保存为 `sentiment_analysis_results.csv`。
-数据可视化图表将保存为 `.png` 文件，例如 `sentiment_distribution.png`。
+分析结果以易读格式输出，并生成以下图表：
 
-Results will be saved as `sentiment_analysis_results.csv`.
-Visualization charts will be saved as `.png` files, e.g., `sentiment_distribution.png`.
+- 用户活跃时间分布图。
+- 用户情绪趋势图。
+- 用户月度消息分布图。
+- 词云图。
+
+The analysis results are displayed in a readable format, with the following charts generated:
+
+- User activity distribution.
+- Sentiment trend by user.
+- Monthly message distribution.
+- Word cloud visualization.
 
 ---
 
