@@ -62,39 +62,86 @@ Calculates message count, total word count, and average word count per user.
 
 ## 使用指南 / Usage Guide
 
-### 1. 安装依赖 / Install Dependencies
-在虚拟环境中安装项目所需的依赖：
-```bash
-pip install -r requirements.txt
-```
+### 1. 选择模式 / Select Mode
+ChatAnalyzer 提供以下三种模式，用户可以根据需求选择不同的分析模式：
+
+ChatAnalyzer provides the following three modes, and users can choose different analysis modes according to their needs:
+
+- `sample`
+
+  进行小样本数据分析（随机抽取 100 条聊天记录）。A small sample of data was analyzed (100 randomly selected chat logs).
+  
+  ```bash
+  chatanalyzer sample
+  ```
+- `request`
+  
+  进行全量数据分析，将数据批量发送至百度 API。Perform full data analysis and send data to the Baidu API in batches.
+  
+  ```bash
+  chatanalyzer request
+  ```
+- `analyze`
+  
+  分析从 API 返回的结果并生成数据统计和可视化。Analyze the results returned from the API and generate data statistics and visualizations.
+  
+   ```bash
+  chatanalyzer analyze
+  ``` 
+
 ---
 
-### 2. 使用方法 / How to Use
-在 main.py 中设置聊天数据文件路径并运行：
-```bash
-python3 main.py <mode>
-```
-`<mode>` 参数选项 parameter option：
+### 2. 数据文件命名和存储路径 / Data File Naming and Storage Path
+- `sample`
+  
+  输入文件名：`sample_data.csv`
+  
+  存放路径：将文件存储在运行命令的同级目录中。
+  
+- `request`
+  
+  输入文件名：`full_data.csv`
+  
+  存放路径：同样存储在当前目录中，API 返回结果将保存为 `api_output.csv`。
 
-- `sample`: 小样本分析 Small sample analysis
-- `request`: 全样本 API 请求 Full sample API request
-- `analyze`: 保存结果的全面分析 Comprehensive analysis of the results saved
+- `analyze`
+  
+  输入文件名：`api_output.csv`
+  
+  分析结果输出为 `final_analysis.csv`，图表保存为 `.png` 文件。
+
+
+The data file naming and storage path are as follows:
+- `sample`
+  
+  Enter the file name：`sample_data.csv`
+  
+  Storage path: Store the file in the same level directory as the command being run.
+  
+- `request`
+  
+  Enter the file name：`full_data.csv`
+  
+  Storage path: Also stored in the current directory, the API return result will be saved as `api_output.csv`.
+  
+- `analyze`
+  
+  Enter the file name：`api_output.csv`
+  
+  The analysis results are output as `final_analysis.csv` and the charts are saved as `.png` files.
+
 ---
 
 ### 3. 输出结果 / Output
-分析结果以易读格式输出，并生成以下图表：
+分析结果以易读格式输出，并支持生成以下图表：用户活跃时间分布图，用户情绪趋势图，用户月度消息分布图，词云图。
+- 分析结果保存为 `.csv` 文件，例如 `final_analysis.csv`。
+- 可视化图表保存为 `.png` 文件，例如 `sentiment_distribution.png`。
+- 输出文件将存储在与输入文件相同的目录中。
 
-- 用户活跃时间分布图。
-- 用户情绪趋势图。
-- 用户月度消息分布图。
-- 词云图。
-
-The analysis results are displayed in a readable format, with the following charts generated:
-
-- User activity distribution.
-- Sentiment trend by user.
-- Monthly message distribution.
-- Word cloud visualization.
+The analysis results are output in an easy-to-read format and support the generation of the following charts: user activity time distribution chart, user sentiment trend chart, user monthly message distribution chart, word cloud chart.
+- The analysis results are saved as a `.csv` file, for example `final_analysis.csv`.
+- The visual charts are saved as `.png` files, for example `sentiment_distribution.png`.
+- The output files will be stored in the same directory as the
 
 ---
 
@@ -106,11 +153,9 @@ To use this tool, you need to provide the API Key and Secret Key of the [Baidu N
 
 ### 使用步骤 / Steps to use
 
-1. 启动程序后，系统将提示您输入 API Key 和 Secret Key。
-2. 程序将自动生成 Access Token，并将其保存到 `access_token.txt` 文件中供后续使用。
+启动程序后，系统将提示您输入 API Key 和 Secret Key。程序将自动生成 Access Token，并将其保存到 `access_token.txt` 文件中供后续使用。
 
-1. After starting the program, you will be prompted to enter the API Key and Secret Key.
-2. The program will automatically generate an Access Token and save it to the `access_token.txt` file for subsequent use.
+After starting the program, you will be prompted to enter the API Key and Secret Key. The program will automatically generate an Access Token and save it to the `access_token.txt` file for subsequent use.
 
 ### 示例 e.g.
 
