@@ -98,6 +98,31 @@ The analysis results are displayed in a readable format, with the following char
 
 ---
 
+## 配置 Baidu API 密钥 / Configure Baidu API key
+
+要使用本工具，您需要提供[百度 NLP API](https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjgn3) 的 API Key 和 Secret Key。程序会根据这些密钥自动生成 Access Token。
+
+To use this tool, you need to provide the API Key and Secret Key of the [Baidu NLP API](https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjgn3). The program will automatically generate an Access Token based on these keys.
+
+### 使用步骤 / Steps to use
+
+1. 启动程序后，系统将提示您输入 API Key 和 Secret Key。
+2. 程序将自动生成 Access Token，并将其保存到 `access_token.txt` 文件中供后续使用。
+
+1. After starting the program, you will be prompted to enter the API Key and Secret Key.
+2. The program will automatically generate an Access Token and save it to the `access_token.txt` file for subsequent use.
+
+### 示例 e.g.
+
+```bash
+$ python3 main.py analyze
+Enter your Baidu API Key: <Your API Key>
+Enter your Baidu Secret Key: <Your Secret Key>
+New Access Token: <Generated Access Token>
+```
+
+--- 
+
 ## 许可 / License
 该项目已获得MIT许可——详情请参阅[许可](LICENSE)文件。
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
