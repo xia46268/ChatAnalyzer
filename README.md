@@ -11,42 +11,48 @@ ChatAnalyzer is a tool designed to analyze Chinese chat data, providing sentimen
 ## 功能简介 / Features
 
 ### 1. 数据预处理 / Data Preprocessing
-- 随机抽取聊天记录中的100（可自选）条进行分析。
-- 处理聊天记录中的文本（主要是中文的）、图片和表情包。
-- 支持过滤非文本消息，例如图片和表情包。
+- 支持随机抽取聊天记录中的100条（可自定义）进行小样本分析。
+- 过滤非文本消息，例如图片和表情包。
 - 自动修正时间格式并解析相关字段。
 
-Process chat logs, handling (mainly in Chinese) text, images, and emojis. 
-- Randomly select 100 (optional) chat records for analysis.
-- Supports filtering out non-text messages such as images and emojis.
+Supports random sampling of 100 chat records (customizable) for small-sample analysis.  
+- Filters non-text messages such as images and emojis.  
 - Automatically corrects time formats and parses relevant fields.
 
 ---
 
 ### 2. 情绪分析 / Sentiment Analysis
 - 调用百度 NLP API，对每条聊天记录的情绪进行分类（正面、中性、负面）。
-- 支持使用 API 返回的置信度加权情绪结果。
+- 支持对整个样本或小样本进行情绪分析。
+- 使用 API 返回的置信度对情绪结果进行加权。
 
-Utilize Baidu NLP API to classify the sentiment of each chat message (positive, neutral, negative). 
-- Supports confidence-weighted sentiment results based on API feedback.
+Utilizes Baidu NLP API to classify the sentiment of each chat message (positive, neutral, negative).  
+- Supports sentiment analysis for both full and small sample datasets.  
+- Confidence-weighted sentiment results based on API feedback.
 
 ---
 
 ### 3. 数据可视化 / Data Visualization
-- 生成用户情绪分布图，展示不同用户的情绪分类。
+- 绘制用户情绪趋势图，展示特定时间内情绪波动。
+- 生成用户情绪分布图，直观展示用户的情绪类别分布。
 - 绘制用户在不同时间段的活跃度分布图。
+- 生成用户的月度消息分布图。
 
-Generate sentiment distribution plots by user, displaying sentiment categories.  
-- Visualize user activity over different time periods.
+Plots user sentiment trends, showing sentiment volatility over time.  
+- Generates sentiment distribution charts to visualize user sentiment categories.  
+- Visualizes user activity during different time periods.  
+- Displays monthly message distribution for each user.
 
 ---
 
 ### 4. 用户行为统计 / User Behavior Statistics
 - 统计用户的消息数量、总字数、平均字数。
 - 计算用户的情绪波动（正面与负面概率的标准差）。
+- 分析用户的消息时间间隔，识别“破冰者”和“消失者”。
 
-Calculate message count, total word count, and average word count per user.  
-- Measure user emotional variability (standard deviation of positive and negative probabilities).
+Calculates message count, total word count, and average word count per user.  
+- Measures user emotional variability (standard deviation of positive and negative probabilities).  
+- Analyzes message time intervals to identify "Ice Breakers" and "Vanishers."
 
 ---
 
