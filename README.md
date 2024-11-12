@@ -110,6 +110,7 @@ ChatAnalyzer provides the following three modes, and users can choose different 
   
   分析结果输出为 `final_analysis.csv`，图表保存为 `.png` 文件。
 
+
 The data file naming and storage path are as follows:
 - `sample`
   
@@ -152,11 +153,9 @@ To use this tool, you need to provide the API Key and Secret Key of the [Baidu N
 
 ### 使用步骤 / Steps to use
 
-1. 启动程序后，系统将提示您输入 API Key 和 Secret Key。
-2. 程序将自动生成 Access Token，并将其保存到 `access_token.txt` 文件中供后续使用。
+启动程序后，系统将提示您输入 API Key 和 Secret Key。程序将自动生成 Access Token，并将其保存到 `access_token.txt` 文件中供后续使用。
 
-1. After starting the program, you will be prompted to enter the API Key and Secret Key.
-2. The program will automatically generate an Access Token and save it to the `access_token.txt` file for subsequent use.
+After starting the program, you will be prompted to enter the API Key and Secret Key. The program will automatically generate an Access Token and save it to the `access_token.txt` file for subsequent use.
 
 ### 示例 e.g.
 
