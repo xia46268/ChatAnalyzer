@@ -74,15 +74,15 @@ def calculate_silence_breakers(df):
     df['Time_Diff'] = df['StrTime'].diff().dt.total_seconds().div(3600).fillna(0)
     df['Is_破冰者'] = df['Time_Diff'] > 12  # 保持阈值为 12 小时
     df['Is_消失者'] = (df['Time_Diff'] > 1) & (~df['Is_破冰者'])  # 这里1小时为消失者的阈值
+
     breaker_counts = df[df['Is_破冰者']].groupby('User').size()
     vanish_counts = df[df['Is_消失者']].groupby('User').size()
     total_counts = df.groupby('User').size()
-    silence_break_stats = {
-        'breaker_ratio': breaker_counts / total_counts,
-        'vanish_ratio': vanish_counts / total_counts
-    }
-    return {'breaker_ratio': breaker_ratio, 'vanish_ratio': vanish_ratio}
 
+    breaker_ratio = breaker_counts / total_counts
+    vanish_ratio = vanish_counts / total_counts
+
+    return {'breaker_ratio': breaker_ratio, 'vanish_ratio': vanish_ratio}
 
 def get_first_chat_date(df):
     """

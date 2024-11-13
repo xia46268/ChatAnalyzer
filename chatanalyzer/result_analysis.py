@@ -89,15 +89,15 @@ def analyze_saved_results(input_path, analysis_output_path):
     print(f"{most_random_user} 的消息发送更随机，不知道ta的消息什么时候出现")
 
     # 破冰者和消失者分析
-    # Analyze ice-breakers and vanishers
     silence_break_stats = calculate_silence_breakers(df)
     num_freeze_periods = df[df['Time_Diff'] > 12].shape[0]
     print(f"你们一共有 {num_freeze_periods} 次超过 12 小时冷场")
     if not silence_break_stats['breaker_ratio'].isna().all():
         print(f"{silence_break_stats['breaker_ratio'].idxmax()} 更会突然出现，开启话题")
+    
     if not silence_break_stats['vanish_ratio'].isna().all():
         print(f"{silence_break_stats['vanish_ratio'].idxmax()} 更会聊到一半突然消失")
-    print("————————————————————")
+    print("——————————————————————————")
     
     # 情绪分析
     # Sentiment analysis
