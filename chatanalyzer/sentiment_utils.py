@@ -17,18 +17,30 @@ def analyze_sentiment(access_token, text, retries=3, timeout=10):
             response = requests.post(url, headers=headers, json=payload, timeout=timeout)
             if response.status_code == 200:
                 items = response.json().get("items", [])
-                return items[0] if items else {}
+                if items:
+                    positive_prob = items[0].get("positive_prob", 0.0)
+                    negative_prob = items[0].get("negative_prob", 0.0)
+                    return {"Positive_Prob": positive_prob, "Negative_Prob": negative_prob}
+                else:
+                    return {"Positive_Prob": 0.0, "Negative_Prob": 0.0}
             else:
                 print(f"Error {response.status_code}: {response.json()}")
-                return None
+                return {"Positive_Prob": 0.0, "Negative_Prob": 0.0}
         except requests.exceptions.RequestException as e:
             print(f"Request error on attempt {attempt + 1}: {e}")
-        
-    return None
+
+    return {"Positive_Prob": 0.0, "Negative_Prob": 0.0}
 
 def calculate_emotional_variability(df):
-    variability = df.groupby('User')[['Positive_Prob', 'Negative_Prob']].std().fillna(0)
-    print("Emotional Variability:\n", variability)
+    """
+    Calculate emotional variability for each user by calculating the standard deviation of sentiment scores.
+    通过计算情绪得分的标准差来计算每个用户的情绪波动。
+    """
+    if 'Positive_Prob' not in df.columns or 'Negative_Prob' not in df.columns:
+        raise ValueError("The DataFrame must contain 'Positive_Prob' and 'Negative_Prob' columns.")
+    variability = df.groupby('User')[['Positive_Prob', 'Negative_Prob']].std()
+    variability = variability.fillna(0)
+    print("\nEmotional Variability:\n", variability)
     return variability
 
 def calculate_sentiment_proportion(df):
@@ -50,7 +62,11 @@ def calculate_silence_breakers(df):
     breaker_counts = df[df['Is_破冰者']].groupby('User').size()
     vanish_counts = df[df['Is_消失者']].groupby('User').size()
     total_counts = df.groupby('User').size()
-    return {'breaker_ratio': breaker_counts / total_counts, 'vanish_ratio': vanish_counts / total_counts}
+    # 使用 fillna(0) 防止 NaN
+    breaker_ratio = (breaker_counts / total_counts).fillna(0)
+    vanish_ratio = (vanish_counts / total_counts).fillna(0)
+    return {'breaker_ratio': breaker_ratio, 'vanish_ratio': vanish_ratio}
+
 
 def get_first_chat_date(df):
     """
@@ -111,3 +127,16 @@ def get_longest_silence(df):
     silence_breaker = df.loc[df['Time_Diff'].idxmax(), 'User']
     print(f"最久没聊天的时间间隔是 {max_silence:.2f} 小时，打破沉默的人是 {silence_breaker}")
     return max_silence, silence_breaker
+
+def count_specific_word(df):
+    """
+    Allow the user to input a word and count its total occurrence in the chat records.
+    让用户输入一个词并统计它在聊天记录中的总出现次数。
+    """
+    word = input("Enter a word to count its frequency: ")
+    total_occurrences = df['Text'].str.count(word).sum()
+    occurrences_per_user = df.groupby('User')['Text'].apply(lambda x: x.str.count(word).sum())
+    
+    print(f"\nTotal occurrences of '{word}': {total_occurrences}")
+    print(f"Occurrences of '{word}' by user:")
+    print(occurrences_per_user)
