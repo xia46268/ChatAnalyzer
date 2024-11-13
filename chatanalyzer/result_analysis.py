@@ -34,13 +34,12 @@ def analyze_saved_results(input_path, analysis_output_path):
 
     # 1. 输出聊天概述
     # 1. Output the chat summary
-    print("——————————————————————————")
-    print("以下是对 {} 和 {} 的聊天记录分析：".format(first_chat_row['User'], last_chat_row['User']))
-    
     # 获取首次和最后一次聊天的信息
     # Get information about the first and last chat
     first_chat_row = df.loc[df['StrTime'].idxmin()]
     last_chat_row = df.loc[df['StrTime'].idxmax()]
+    print("——————————————————————————")
+    print("以下是对 {} 和 {} 的聊天记录分析：".format(first_chat_row['User'], last_chat_row['User']))
     print(f"第一次聊天的日期: {first_chat_row['StrTime'].date()}")
     print(f"{first_chat_row['User']} 说：“{first_chat_row['Text']}”")
     print(f"最后一次聊天的日期: {last_chat_row['StrTime'].date()}")
