@@ -59,7 +59,8 @@ def analyze_saved_results(input_path, analysis_output_path):
     max_silence, silence_breaker = get_longest_silence(df)
     silence_break_text = df.loc[df['Time_Diff'].idxmax(), 'Text']
     print(f"最久没聊天的时间间隔是 {max_silence:.2f} 小时，打破沉默的人是 {silence_breaker} 说：“{silence_break_text}”")
-
+    print("——————————————————————————")
+    
     # 消息数量和字数的对比
     # Compare message counts and word counts between users
     total_message_count = df.shape[0]
@@ -90,11 +91,14 @@ def analyze_saved_results(input_path, analysis_output_path):
     # 破冰者和消失者分析
     # Analyze ice-breakers and vanishers
     silence_break_stats = calculate_silence_breakers(df)
-    num_freeze_periods = df[df['Time_Diff'] > 720].shape[0]
-    print(f"你们一共有 {num_freeze_periods} 次冰冻期（超过 12 小时未说话）")
-    print(f"{silence_break_stats['breaker_ratio'].idxmax()} 更会突然出现，开启话题")
-    print(f"{silence_break_stats['vanish_ratio'].idxmax()} 更会聊到一半突然消失")
-
+    num_freeze_periods = df[df['Time_Diff'] > 12].shape[0]
+    print(f"你们一共有 {num_freeze_periods} 次超过 12 小时冷场")
+    if not silence_break_stats['breaker_ratio'].isna().all():
+        print(f"{silence_break_stats['breaker_ratio'].idxmax()} 更会突然出现，开启话题")
+    if not silence_break_stats['vanish_ratio'].isna().all():
+        print(f"{silence_break_stats['vanish_ratio'].idxmax()} 更会聊到一半突然消失")
+    print("————————————————————")
+    
     # 情绪分析
     # Sentiment analysis
     sentiment_proportion = calculate_sentiment_proportion(df)
@@ -114,9 +118,9 @@ def analyze_saved_results(input_path, analysis_output_path):
     # Word frequency analysis
     word_counts = word_frequency_analysis(df)
     common_words = word_counts.most_common()
-    print(f"你们可能最喜欢说的词是（{common_words[3][0]}），共出现了 {common_words[3][1]} 次")
+    print(f"你们可能最喜欢说的词是（{common_words[2][0]}），共出现了 {common_words[2][1]} 次")
     print("其他也常被说起的是：")
-    for word, count in common_words[4:10]:
+    for word, count in common_words[3:9]:
         print(f"（{word}），共出现了 {count} 次")
 
     # "哈"的使用统计
