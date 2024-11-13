@@ -46,7 +46,6 @@ def generate_word_cloud(word_counts, output_path="word_cloud.png", colormap='coo
     plt.savefig(output_path)
     plt.show()
 
-
 def plot_sentiment_trend(df, user_colors, output_path="sentiment_trend.png"):
     """
     Plot sentiment trends over time.

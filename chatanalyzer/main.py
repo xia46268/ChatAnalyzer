@@ -1,9 +1,7 @@
 import argparse
-from chatanalyzer.sentiment_analysis import (
-    analyze_sample_data,
-    batch_request_api,
-    analyze_saved_results
-)
+from chatanalyzer.sample_analysis import analyze_sample_data
+from chatanalyzer.full_analysis import batch_request_api
+from chatanalyzer.result_analysis import analyze_saved_results
 
 def main():
     parser = argparse.ArgumentParser(description="Chat Analyzer Main Script")
@@ -20,7 +18,7 @@ def main():
     args = parser.parse_args()
 
     if args.mode == 'sample':
-        analyze_sample_data('sample_data.csv', 'output.csv')
+        analyze_sample_data('sample_data.csv', 'output_sample.csv')
     elif args.mode == 'request':
         batch_request_api('full_data.csv', 'api_output.csv')
     elif args.mode == 'analyze':

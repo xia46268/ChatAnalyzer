@@ -46,6 +46,21 @@ def generate_word_cloud(word_counts, output_path="word_cloud.png", colormap='coo
     plt.savefig(output_path)
     plt.show()
 
+def dynamic_wordcloud(df):
+    """
+    Generate dynamic word clouds for each month based on chat data.
+    """
+    df['Month'] = df['StrTime'].dt.to_period('M')
+    monthly_texts = df.groupby('Month')['Text'].apply(' '.join)
+
+    for month, text in monthly_texts.items():
+        wordcloud = WordCloud(font_path="/System/Library/Fonts/STHeiti Light.ttc", 
+                              width=800, height=400, background_color='white').generate(text)
+        plt.figure(figsize=(10, 5))
+        plt.imshow(wordcloud, interpolation='bilinear')
+        plt.axis('off')
+        plt.title(f"Word Cloud for {month}")
+        plt.show()
 
 def plot_sentiment_trend(df, user_colors, output_path="sentiment_trend.png"):
     """
