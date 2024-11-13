@@ -47,7 +47,10 @@ def word_frequency_analysis(df):
 def calculate_silence_breakers(df):
     df['Is_破冰者'] = (df['Time_Diff'] > 720)
     df['Is_消失者'] = (df['Time_Diff'] > 60) & (~df['Is_破冰者'])
-    breaker_cou
+    breaker_counts = df[df['Is_破冰者']].groupby('User').size()
+    vanish_counts = df[df['Is_消失者']].groupby('User').size()
+    total_counts = df.groupby('User').size()
+    return {'breaker_ratio': breaker_counts / total_counts, 'vanish_ratio': vanish_counts / total_counts}
 
 def get_first_chat_date(df):
     """
