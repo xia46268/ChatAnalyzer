@@ -20,28 +20,41 @@ def analyze_sentiment(access_token, text, retries=3, timeout=10):
                 if items:
                     positive_prob = items[0].get("positive_prob", 0.0)
                     negative_prob = items[0].get("negative_prob", 0.0)
-                    return {"Positive_Prob": positive_prob, "Negative_Prob": negative_prob}
+                    neutral_prob = items[0].get("neutral_prob", 0.0)
+                    return {
+                        "Positive_Prob": positive_prob,
+                        "Negative_Prob": negative_prob,
+                        "Neutral_Prob": neutral_prob,
+                    }
                 else:
-                    return {"Positive_Prob": 0.0, "Negative_Prob": 0.0}
+                    return {"Positive_Prob": 0.0, "Negative_Prob": 0.0, "Neutral_Prob": 0.0}
             else:
                 print(f"Error {response.status_code}: {response.json()}")
-                return {"Positive_Prob": 0.0, "Negative_Prob": 0.0}
+                return {"Positive_Prob": 0.0, "Negative_Prob": 0.0, "Neutral_Prob": 0.0}
         except requests.exceptions.RequestException as e:
             print(f"Request error on attempt {attempt + 1}: {e}")
 
-    return {"Positive_Prob": 0.0, "Negative_Prob": 0.0}
+    return {"Positive_Prob": 0.0, "Negative_Prob": 0.0, "Neutral_Prob": 0.0}
+
 
 def calculate_emotional_variability(df):
     """
     Calculate emotional variability for each user by calculating the standard deviation of sentiment scores.
     通过计算情绪得分的标准差来计算每个用户的情绪波动。
     """
+    # 确保数据包含 'Positive_Prob' 和 'Negative_Prob' 两列
     if 'Positive_Prob' not in df.columns or 'Negative_Prob' not in df.columns:
         raise ValueError("The DataFrame must contain 'Positive_Prob' and 'Negative_Prob' columns.")
+
+    # 按用户分组，计算每个用户的正面和负面情绪的标准差
     variability = df.groupby('User')[['Positive_Prob', 'Negative_Prob']].std()
+
+    # 用 0 填充任何可能的缺失值（例如某个用户只有一条数据，导致无法计算标准差）
     variability = variability.fillna(0)
-    print("\nEmotional Variability:\n", variability)
+
+    # 检查正负情绪的波动是否计算正确
     return variability
+
 
 def calculate_sentiment_proportion(df):
     sentiment_counts = df.groupby('User')['Sentiment'].value_counts().unstack(fill_value=0)
@@ -125,7 +138,6 @@ def get_longest_silence(df):
     df['Time_Diff'] = df['StrTime'].diff().dt.total_seconds().div(3600).fillna(0)
     max_silence = df['Time_Diff'].max()
     silence_breaker = df.loc[df['Time_Diff'].idxmax(), 'User']
-    print(f"最久没聊天的时间间隔是 {max_silence:.2f} 小时，打破沉默的人是 {silence_breaker}")
     return max_silence, silence_breaker
 
 def count_specific_word(df):

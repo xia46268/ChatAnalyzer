@@ -90,6 +90,8 @@ def analyze_saved_results(input_path, analysis_output_path):
     # 破冰者和消失者分析
     # Analyze ice-breakers and vanishers
     silence_break_stats = calculate_silence_breakers(df)
+    num_freeze_periods = df[df['Time_Diff'] > 720].shape[0]
+    print(f"你们一共有 {num_freeze_periods} 次冰冻期（超过 12 小时未说话）")
     print(f"{silence_break_stats['breaker_ratio'].idxmax()} 更会突然出现，开启话题")
     print(f"{silence_break_stats['vanish_ratio'].idxmax()} 更会聊到一半突然消失")
 
@@ -98,7 +100,8 @@ def analyze_saved_results(input_path, analysis_output_path):
     sentiment_proportion = calculate_sentiment_proportion(df)
     most_positive_user = sentiment_proportion['Positive_Proportion'].idxmax()
     most_negative_user = sentiment_proportion['Negative_Proportion'].idxmax()
-    print(f"看上去，可能 {most_positive_user} 的情绪更为积极")
+    print(f"看上去，可能")
+    print(f"{most_positive_user} 的情绪更为积极")
     print(f"{most_negative_user} 更喜欢在聊天的时候吐槽")
 
     # 情绪波动
@@ -111,9 +114,9 @@ def analyze_saved_results(input_path, analysis_output_path):
     # Word frequency analysis
     word_counts = word_frequency_analysis(df)
     common_words = word_counts.most_common()
-    print(f"你们最喜欢说的词是（{common_words[6][0]}），共出现了 {common_words[6][1]} 次")
+    print(f"你们可能最喜欢说的词是（{common_words[3][0]}），共出现了 {common_words[3][1]} 次")
     print("其他也常被说起的是：")
-    for word, count in common_words[7:16]:
+    for word, count in common_words[4:10]:
         print(f"（{word}），共出现了 {count} 次")
 
     # "哈"的使用统计
@@ -128,6 +131,7 @@ def analyze_saved_results(input_path, analysis_output_path):
 
     # 9. 用户输入词的统计功能
     # User input word count functionality
+    print(f"试着输入一个你想统计次数的词吧")
     count_specific_word(df)
 
     # 继续输出详细的数据库来源
