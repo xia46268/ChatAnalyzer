@@ -1,5 +1,7 @@
 # ChatAnalyzer
 
+11/19/2024: Have successfully analyzed the chat logs of a few friends, and are now making samples and modifying annotations into Chinese and English, and have improved the description of access token and the description of using packages.
+
 ## 项目简介 / Project Overview
 
 ChatAnalyzer 是一个用于分析中文聊天数据的工具，能够对聊天记录进行情绪分析、数据可视化以及用户行为统计。它特别适合需要从大量聊天记录中提取信息的用户，例如研究人员或数据分析师。
