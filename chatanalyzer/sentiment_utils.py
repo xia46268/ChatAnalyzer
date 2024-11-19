@@ -6,8 +6,12 @@ from sklearn.decomposition import LatentDirichletAllocation
 import pandas as pd
 
 def analyze_sentiment(access_token, text, retries=3, timeout=10):
+    """
+    Analyze sentiment using Baidu's API.
+    """
     if not text.strip():
         return None
+
     url = f"https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify?access_token={access_token}"
     headers = {"Content-Type": "application/json"}
     payload = {"text": text}
@@ -16,25 +20,24 @@ def analyze_sentiment(access_token, text, retries=3, timeout=10):
         try:
             response = requests.post(url, headers=headers, json=payload, timeout=timeout)
             if response.status_code == 200:
-                items = response.json().get("items", [])
+                response_json = response.json()
+                items = response_json.get("items", [])
                 if items:
-                    positive_prob = items[0].get("positive_prob", 0.0)
-                    negative_prob = items[0].get("negative_prob", 0.0)
-                    neutral_prob = items[0].get("neutral_prob", 0.0)
                     return {
-                        "Positive_Prob": positive_prob,
-                        "Negative_Prob": negative_prob,
-                        "Neutral_Prob": neutral_prob,
+                        "Sentiment": items[0].get("sentiment", 1),  # 默认中性情绪
+                        "Confidence": items[0].get("confidence", 0.0),
+                        "Positive_Prob": items[0].get("positive_prob", 0.0),
+                        "Negative_Prob": items[0].get("negative_prob", 0.0),
                     }
                 else:
-                    return {"Positive_Prob": 0.0, "Negative_Prob": 0.0, "Neutral_Prob": 0.0}
+                    return {"Sentiment": 1, "Confidence": 0.0, "Positive_Prob": 0.0, "Negative_Prob": 0.0}
             else:
-                print(f"Error {response.status_code}: {response.json()}")
-                return {"Positive_Prob": 0.0, "Negative_Prob": 0.0, "Neutral_Prob": 0.0}
-        except requests.exceptions.RequestException as e:
-            print(f"Request error on attempt {attempt + 1}: {e}")
+                return {"Sentiment": 1, "Confidence": 0.0, "Positive_Prob": 0.0, "Negative_Prob": 0.0}
 
-    return {"Positive_Prob": 0.0, "Negative_Prob": 0.0, "Neutral_Prob": 0.0}
+        except requests.exceptions.RequestException:
+            continue
+
+    return {"Sentiment": 1, "Confidence": 0.0, "Positive_Prob": 0.0, "Negative_Prob": 0.0}
 
 
 def calculate_emotional_variability(df):

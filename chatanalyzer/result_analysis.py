@@ -1,4 +1,5 @@
 import pandas as pd
+from chatanalyzer.data_preprocessing import append_csv_files
 from chatanalyzer.visualization import (
     assign_colors,
     plot_sentiment_distribution,
@@ -22,6 +23,8 @@ from chatanalyzer.sentiment_utils import (
     count_specific_word
 )
 
+# append_csv_files("api_output1.csv", "api_output2.csv", "api_output.csv")
+
 def analyze_saved_results(input_path, analysis_output_path):
     """
     Analyze the results saved from API requests.
@@ -34,12 +37,15 @@ def analyze_saved_results(input_path, analysis_output_path):
 
     # 1. 输出聊天概述
     # 1. Output the chat summary
+    # 获取所有参与者的用户名
+    users_list = ', '.join(map(str, df['User'].dropna().unique()))
+
     # 获取首次和最后一次聊天的信息
     # Get information about the first and last chat
     first_chat_row = df.loc[df['StrTime'].idxmin()]
     last_chat_row = df.loc[df['StrTime'].idxmax()]
-    print("——————————————————————————")
-    print("以下是对 {} 和 {} 的聊天记录分析：".format(first_chat_row['User'], last_chat_row['User']))
+    print("————————————————————")
+    print("以下是对 {} 的聊天记录分析：".format(users_list))
     print(f"第一次聊天的日期: {first_chat_row['StrTime'].date()}")
     print(f"{first_chat_row['User']} 说：“{first_chat_row['Text']}”")
     print(f"最后一次聊天的日期: {last_chat_row['StrTime'].date()}")
@@ -59,7 +65,7 @@ def analyze_saved_results(input_path, analysis_output_path):
     max_silence, silence_breaker = get_longest_silence(df)
     silence_break_text = df.loc[df['Time_Diff'].idxmax(), 'Text']
     print(f"最久没聊天的时间间隔是 {max_silence:.2f} 小时，打破沉默的人是 {silence_breaker} 说：“{silence_break_text}”")
-    print("——————————————————————————")
+    print("————————————————————")
     
     # 消息数量和字数的对比
     # Compare message counts and word counts between users
@@ -97,7 +103,7 @@ def analyze_saved_results(input_path, analysis_output_path):
     
     if not silence_break_stats['vanish_ratio'].isna().all():
         print(f"{silence_break_stats['vanish_ratio'].idxmax()} 更会聊到一半突然消失")
-    print("——————————————————————————")
+    print("————————————————————")
     
     # 情绪分析
     # Sentiment analysis
@@ -140,7 +146,7 @@ def analyze_saved_results(input_path, analysis_output_path):
 
     # 继续输出详细的数据库来源
     # Continue to output detailed database source
-    print("——————————————————————————")
+    print("————————————————————")
     print("\n下面是详细的数据库来源：\n")
 
     # 2. 可视化部分
@@ -157,30 +163,34 @@ def analyze_saved_results(input_path, analysis_output_path):
     # 3. 打印用户统计信息
     # Print user message statistics
     print("\nUser Message Statistics (Text Only):\n", user_stats)
-    print("——————————————————————————")
+    print("————————————————————")
 
     # 4. 打印情感比例
     # Print sentiment proportions
     print("\nSentiment Proportion by User (Relative to User's Message Count):\n", sentiment_proportion)
-    print("——————————————————————————")
+    print("————————————————————")
 
     # 5. 打印时间间隔统计
     # Print time interval statistics
     print("\nTime Interval Statistics:\n", time_stats)
-    print("——————————————————————————")
+    print("————————————————————")
 
     # 6. 打印破冰者和消失者比例
     # Print ice-breaker and vanisher ratios
     print("\nIce-breaker Ratio:\n", silence_break_stats['breaker_ratio'])
     print("Vanisher Ratio:\n", silence_break_stats['vanish_ratio'])
-    print("——————————————————————————")
+    print("————————————————————")
 
     # 7. 打印情绪波动
     # Print emotional variability
     print("\nEmotional Variability:\n", variability)
-    print("——————————————————————————")
+    print("————————————————————")
 
     # 8. 词频分析和词云
     # Word frequency analysis and word cloud
     print("\nTop 50 Common Words:\n", word_counts.most_common(50))
 
+if __name__ == "__main__":
+    input_file = "api_output.csv"  # 输入文件路径
+    output_file = "final_analysis.csv"  # 输出文件路径
+    analyze_saved_results(input_file, output_file)

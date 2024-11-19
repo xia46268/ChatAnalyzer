@@ -44,17 +44,18 @@ class BaiduAuth:
             print(f"Access token saved to {file_path}.")
         else:
             raise ValueError("No access token available to save.")
-
+    
     def load_access_token(self, file_path="access_token.txt"):
         """Load access token from a file."""
         try:
             with open(file_path, "r") as file:
-                self.access_token = file.read().strip()
+                self.access_token = file.read().strip()  # 使用 strip() 去掉任何多余的空格或换行符
             print(f"Access token loaded from {file_path}.")
         except FileNotFoundError:
             print(f"No access token file found at {file_path}.")
         except Exception as e:
             print(f"Failed to load access token: {e}")
+
 
     def is_token_valid(self):
         """

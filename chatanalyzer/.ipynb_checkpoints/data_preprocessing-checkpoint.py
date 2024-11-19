@@ -11,26 +11,32 @@ def load_and_preprocess_data(file_path):
     Returns:
     - pd.DataFrame: Preprocessed DataFrame with relevant columns.
     """
-    # 读取CSV文件；read
+    # Load CSV file
     df = pd.read_csv(file_path)
 
-    # 仅保留相关列；keep only relevant columns
+    # Check if 'Remark' column exists, if not, prompt a warning or try another name
+    if 'Remark' not in df.columns:
+        print("Warning: 'Remark' column not found, please check your CSV file columns.")
+        # Example to handle a different column name, modify as necessary
+        if 'Name' in df.columns:
+            df = df.rename(columns={'Name': 'Remark'})
+
+    # Keep only relevant columns
     df = df[['StrContent', 'StrTime', 'Remark']]
 
-    # 将 Remark 列重命名为 User；rename
-    df.rename(columns={'Remark': 'User'}, inplace=True)
+    # Rename Remark column to User
+    df = df.rename(columns={'Remark': 'User'})  # 注意：不要使用 inplace，使用重新赋值的方式
 
-    # 填补缺失值；fill in missing values
-    df['StrContent'].fillna('', inplace=True)
+    # Fill in missing values
+    df['StrContent'] = df['StrContent'].fillna('')
 
-    # 解析表情包和图片；category Emoticons and pictures
+    # Parse message type (e.g., emoji, image)
     df['MessageType'] = df['StrContent'].apply(classify_message_type)
 
-    # 确保时间格式正确；time format
+    # Ensure time format is correct
     df['StrTime'] = pd.to_datetime(df['StrTime'], format='%Y-%m-%d %H:%M:%S')
 
     return df
-
 
 def classify_message_type(content):
     """
@@ -42,17 +48,32 @@ def classify_message_type(content):
     Returns:
     - str: Type of the message ('emoji', 'image', 'empty', 'other', or 'text').
     """
-    # 匹配图片消息
+    # Match image messages
     if re.search(r'<msg>\s*<img.*?>\s*</msg>', content, re.DOTALL):
-        return 'image'  # 图片消息
-    # 匹配表情包消息
+        return 'image'
+    # Match emoji messages
     elif re.search(r'<msg>\s*<emoji.*?>.*?</msg>', content, re.DOTALL):
-        return 'emoji'  # 表情包
-    # 匹配空消息
+        return 'emoji'
+    # Match empty messages
     elif content.strip() == '':
-        return 'empty'  # 空消息
-    # 排除其他特殊消息
+        return 'empty'
+    # Match other types of messages
     elif re.search(r'<msg>.*?</msg>', content, re.DOTALL):
-        return 'other'  # 其他消息
+        return 'other'
     else:
-        return 'text'  # 纯文本消息
+        return 'text'
+
+def append_csv_files(file1, file2, output_file):
+    """
+    Append the contents of file1 and file2 and save the result to output_file.
+    """
+    # 加载两个 CSV 文件
+    df1 = pd.read_csv(file1)
+    df2 = pd.read_csv(file2)
+
+    # 合并两个 DataFrame
+    combined_df = pd.concat([df1, df2], ignore_index=True)
+
+    # 保存到新的输出文件
+    combined_df.to_csv(output_file, index=False)
+    print(f"Files {file1} and {file2} have been combined and saved to {output_file}")
