@@ -1,6 +1,6 @@
 # ChatAnalyzer
 
-11/19/2024: Have successfully analyzed the chat logs of a few friends, and are now making samples and modifying annotations into Chinese and English, and have improved the description of access token and the description of using packages.
+✨11/19/2024: Have successfully analyzed the chat logs of a few friends, and are now making samples and modifying annotations into Chinese and English, and have improved the description of access token and the description of using packages.
 
 ## 项目简介 / Project Overview
 
