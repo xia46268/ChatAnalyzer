@@ -24,7 +24,7 @@ def analyze_sentiment(access_token, text, retries=3, timeout=10):
                 items = response_json.get("items", [])
                 if items:
                     return {
-                        "Sentiment": items[0].get("sentiment", 1),  # 默认中性情绪
+                        "Sentiment": items[0].get("sentiment", 1),  # Default neutral sentiment
                         "Confidence": items[0].get("confidence", 0.0),
                         "Positive_Prob": items[0].get("positive_prob", 0.0),
                         "Negative_Prob": items[0].get("negative_prob", 0.0),
@@ -43,19 +43,17 @@ def analyze_sentiment(access_token, text, retries=3, timeout=10):
 def calculate_emotional_variability(df):
     """
     Calculate emotional variability for each user by calculating the standard deviation of sentiment scores.
-    通过计算情绪得分的标准差来计算每个用户的情绪波动。
     """
-    # 确保数据包含 'Positive_Prob' 和 'Negative_Prob' 两列
+    # Ensure the data contains 'Positive_Prob' and 'Negative_Prob' columns
     if 'Positive_Prob' not in df.columns or 'Negative_Prob' not in df.columns:
         raise ValueError("The DataFrame must contain 'Positive_Prob' and 'Negative_Prob' columns.")
 
-    # 按用户分组，计算每个用户的正面和负面情绪的标准差
+    # Group by user and calculate the standard deviation of positive and negative sentiments
     variability = df.groupby('User')[['Positive_Prob', 'Negative_Prob']].std()
 
-    # 用 0 填充任何可能的缺失值（例如某个用户只有一条数据，导致无法计算标准差）
+    # Fill any missing values with 0 (e.g., if a user has only one record and cannot calculate std dev)
     variability = variability.fillna(0)
 
-    # 检查正负情绪的波动是否计算正确
     return variability
 
 
@@ -73,13 +71,15 @@ def word_frequency_analysis(df):
     return word_counts
 
 def calculate_silence_breakers(df):
-    # 计算时间差（以小时为单位）
+    """
+    Calculate who breaks silences and who vanishes, based on message time intervals.
+    """
     df['Time_Diff'] = df['StrTime'].diff().dt.total_seconds().div(3600).fillna(0)
-    df['Is_破冰者'] = df['Time_Diff'] > 12  # 保持阈值为 12 小时
-    df['Is_消失者'] = (df['Time_Diff'] > 1) & (~df['Is_破冰者'])  # 这里1小时为消失者的阈值
+    df['Is_Breaker'] = df['Time_Diff'] > 12  # Threshold for silence breaker: 12 hours
+    df['Is_Vanisher'] = (df['Time_Diff'] > 1) & (~df['Is_Breaker'])  # Threshold for vanisher: 1 hour
 
-    breaker_counts = df[df['Is_破冰者']].groupby('User').size()
-    vanish_counts = df[df['Is_消失者']].groupby('User').size()
+    breaker_counts = df[df['Is_Breaker']].groupby('User').size()
+    vanish_counts = df[df['Is_Vanisher']].groupby('User').size()
     total_counts = df.groupby('User').size()
 
     breaker_ratio = breaker_counts / total_counts
@@ -89,57 +89,57 @@ def calculate_silence_breakers(df):
 
 def get_first_chat_date(df):
     """
-    输出第一次聊天的日期。
+    Output the date of the first chat.
     """
     first_date = df['StrTime'].min().date()
-    print(f"第一次聊天的日期: {first_date}")
+    print(f"Date of the first chat: {first_date}")
     return first_date
 
 def get_date_difference(df):
     """
-    计算距离第一次聊天的日期和最后一次聊天相隔的时间。
+    Calculate the time difference between the first and last chat dates.
     """
     first_date = df['StrTime'].min().date()
     last_date = df['StrTime'].max().date()
     difference = (last_date - first_date).days
-    print(f"距离第一次聊天的日期和最后一次聊天相隔了 {difference} 天")
+    print(f"The time difference between the first and last chat dates is {difference} days.")
     return difference
 
 def get_peak_hour_activity(df):
     """
-    输出在一天中哪个小时发消息频率最高，发了多少条，占比多少。
+    Output the hour of the day with the highest message frequency, the number of messages, and the percentage.
     """
     df['Hour'] = df['StrTime'].dt.hour
     peak_hour = df['Hour'].value_counts().idxmax()
     peak_count = df['Hour'].value_counts().max()
     total_messages = len(df)
     peak_percentage = (peak_count / total_messages) * 100
-    print(f"在一天中 {peak_hour} 点发消息频率最高，共发了 {peak_count} 条，占比 {peak_percentage:.2f}%")
+    print(f"The hour with the highest message frequency is {peak_hour}, with {peak_count} messages, accounting for {peak_percentage:.2f}%.")
     return peak_hour, peak_count, peak_percentage
 
 def get_peak_month_activity(df):
     """
-    输出在哪个月发消息频率最高，发了多少条，占比多少。
+    Output the month with the highest message frequency, the number of messages, and the percentage.
     """
     df['Month'] = df['StrTime'].dt.to_period('M')
     peak_month = df['Month'].value_counts().idxmax()
     peak_month_count = df['Month'].value_counts().max()
     total_messages = len(df)
     peak_month_percentage = (peak_month_count / total_messages) * 100
-    print(f"在 {peak_month} 月发消息频率最高，共发了 {peak_month_count} 条，占比 {peak_month_percentage:.2f}%")
+    print(f"The month with the highest message frequency is {peak_month}, with {peak_month_count} messages, accounting for {peak_month_percentage:.2f}%.")
     return peak_month, peak_month_count, peak_month_percentage
 
 def get_active_days_count(df):
     """
-    计算一共有多少天有消息记录。
+    Calculate the number of days with messages.
     """
     active_days = df['StrTime'].dt.date.nunique()
-    print(f"一共有 {active_days} 天有消息记录")
+    print(f"There are {active_days} days with message records.")
     return active_days
 
 def get_longest_silence(df):
     """
-    计算最久没聊天是隔了多久，谁是打破沉默的那个。
+    Calculate the longest silence period and who broke the silence.
     """
     df['Time_Diff'] = df['StrTime'].diff().dt.total_seconds().div(3600).fillna(0)
     max_silence = df['Time_Diff'].max()
@@ -149,7 +149,6 @@ def get_longest_silence(df):
 def count_specific_word(df):
     """
     Allow the user to input a word and count its total occurrence in the chat records.
-    让用户输入一个词并统计它在聊天记录中的总出现次数。
     """
     word = input("Enter a word to count its frequency: ")
     total_occurrences = df['Text'].str.count(word).sum()

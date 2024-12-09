@@ -2,56 +2,13 @@
 
 ## 项目简介 / Project Overview
 
-ChatAnalyzer 是一个用于分析中文聊天数据的工具，能够对聊天记录进行情绪分析、数据可视化以及用户行为统计。它特别适合需要从大量聊天记录中提取信息的用户，例如研究人员或数据分析师。
+ChatAnalyzer 是一个用于分析中文聊天数据的工具，能够对聊天记录进行情绪分析、数据可视化以及用户行为统计。设计初衷为帮助个人用户间从大量聊天记录中提取行为信息。后续如果能批量请求调用百度API的话，可以用于企业用户行为报告的营销活动，例如“年度总结报告”。
 
-ChatAnalyzer is a tool designed to analyze Chinese chat data, providing sentiment analysis, data visualization, and user behavior statistics. It is ideal for users who need to extract insights from large amounts of chat records, such as researchers or data analysts.
-
----
-
-## 安装说明 / Installation Instructions
-
-### 1. 使用 pip 安装 / Install via pip
-
-ChatAnalyzer 可以通过 pip 进行安装，请在终端中运行以下命令：
-
-ChatAnalyzer can be installed via pip. Please run the following command in the terminal:
-
-```bash
-pip install chatanalyzer
-```
-
-### 2. 安装所需依赖包 / Install Required Dependencies
-
-为了确保工具运行正常，您需要安装以下依赖包，可以使用以下命令来安装：
-
-To ensure that the tool runs normally, you need to install the following dependency packages, which can be installed using the following command:
-
-```bash
-pip install seaborn wordcloud setuptools wheel jieba tqdm pandas matplotlib
-```
-
-这些依赖包包括但不限于：
-- **seaborn**：用于生成数据可视化图表。
-- **wordcloud**：用于生成词云图。
-- **setuptools & wheel**：用于打包和安装 Python 包。
-- **jieba**：用于中文文本的分词处理。
-- **tqdm**：用于进度条显示。
-- **pandas**：用于数据处理和分析。
-- **matplotlib**：用于生成各种可视化图表。
-
----
-
-## 导出微信聊天记录为 CSV / Export WeChat Chat History to CSV
-
-要分析微信聊天记录，可以使用这个开源工具导出聊天记录为 CSV 格式：[WeChatMsg](https://github.com/LC044/WeChatMsg/)。请按照该项目的说明进行安装和使用，以便将您的微信聊天记录导出为 ChatAnalyzer 支持的 CSV 格式。
-
-To analyze WeChat chat history, you can use this open source tool to export chat history to CSV format: [WeChatMsg](https://github.com/LC044/WeChatMsg/). Please follow the instructions of this project to install and use it in order to export your WeChat chat history to the CSV format supported by ChatAnalyzer.
-
+ChatAnalyzer is a tool for analyzing Chinese chat data, enabling sentiment analysis, data visualization and user behavior statistics on chat transcripts. It is designed to help individual users to extract behavioral information from a large number of chat records. It can be used in marketing campaigns for corporate user behavior reports, such as “annual summary report”, if it can call Baidu API in bulk.
 
 ---
 
 ## 功能简介 / Features
-
 ### 1. 数据预处理 / Data Preprocessing
 - 支持随机抽取聊天记录中的 100 条（可自定义）进行小样本分析。
 - 过滤非文本消息，例如图片和表情包。
@@ -96,7 +53,59 @@ Calculates message count, total word count, and average word count per user.
 
 ---
 
+## 安装说明 / Installation Instructions
+
+### 1. 使用 pip 安装 / Install via pip
+
+ChatAnalyzer 可以通过 pip 进行安装，请在终端中运行以下命令：
+
+ChatAnalyzer can be installed via pip. Please run the following command in the terminal:
+
+```bash
+pip install chatanalyzer
+```
+
+### 2. 安装所需依赖包 / Install Required Dependencies
+
+为了确保工具运行正常，您需要安装以下依赖包，可以使用以下命令来安装：
+
+To ensure that the tool runs normally, you need to install the following dependency packages, which can be installed using the following command:
+
+```bash
+pip install seaborn wordcloud setuptools wheel jieba tqdm pandas matplotlib
+```
+
+- **seaborn**：用于生成数据可视化图表。For generating data visualization charts. 
+- **wordcloud**：用于生成词云图。For generating word cloud maps. 
+- **setuptools & wheel**：用于打包和安装 Python 包。For packaging and installing Python packages.
+- **jieba**：用于中文文本的分词处理。For Chinese text segmentation processing.
+- **tqdm**：用于进度条显示。For progress bar display.
+- **pandas**：用于数据处理和分析。For data processing and analysis.
+- **matplotlib**：用于生成各种可视化图表。For generating various visualization charts.
+
+---
+
+### 3. 导出微信聊天记录为 CSV / Export WeChat Chat History to CSV
+
+要分析微信聊天记录，建议用户使用这个开源工具导出聊天记录为 CSV 格式：[WeChatMsg](https://github.com/LC044/WeChatMsg/)。请按照该项目的说明进行安装和使用，以便将您的微信聊天记录导出为 ChatAnalyzer 支持的 CSV 格式。
+
+To analyze WeChat chat history, users can use this open source tool to export chat history to CSV format: [WeChatMsg](https://github.com/LC044/WeChatMsg/). Please follow the instructions of this project to install and use it in order to export your WeChat chat history to the CSV format supported by ChatAnalyzer.
+
+### 4. 配置 Baidu API 密钥 / Configure Baidu API key
+
+要使用本工具，您需要提供[百度 NLP API](https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjgn3) 的 API Key 和 Secret Key。程序会根据这些密钥自动生成 Access Token。
+
+To use this tool, you need to provide the API Key and Secret Key of the [Baidu NLP API](https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjgn3). The program will automatically generate an Access Token based on these keys.
+
+请将获得的token保存到 `access_token.txt` 文件中供后续使用。
+
+Please save the obtained token to the `access_token.txt` file for future use.
+
+
+---
+
 ## 使用指南 / Usage Guide
+(./ChatAnalyzer.png)
 
 ### 1. 选择模式 / Select Mode
 ChatAnalyzer 提供以下三种模式，用户可以根据需求选择不同的分析模式：
@@ -174,29 +183,6 @@ The analysis results are output in an easy-to-read format and include the follow
 4. **与用户互动（Interaction with User）**：
    - 用户可以输入特定词或字符以获取其在聊天中的频率统计。
    - The user can input specific words or characters to get their frequency in the chat.
-
----
-
-## 配置 Baidu API 密钥 / Configure Baidu API key
-
-要使用本工具，您需要提供[百度 NLP API](https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjgn3) 的 API Key 和 Secret Key。程序会根据这些密钥自动生成 Access Token。
-
-To use this tool, you need to provide the API Key and Secret Key of the [Baidu NLP API](https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjgn3). The program will automatically generate an Access Token based on these keys.
-
-### 使用步骤 / Steps to use
-
-启动程序后，系统将提示您输入 API Key 和 Secret Key。程序将自动生成 Access Token，并将其保存到 `access_token.txt` 文件中供后续使用。
-
-After starting the program, you will be prompted to enter the API Key and Secret Key. The program will automatically generate an Access Token and save it to the `access_token.txt` file for subsequent use.
-
-### 示例 e.g.
-
-```bash
-$ python3 main.py analyze
-Enter your Baidu API Key: <Your API Key>
-Enter your Baidu Secret Key: <Your Secret Key>
-New Access Token: <Generated Access Token>
-```
 
 --- 
 

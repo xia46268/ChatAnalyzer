@@ -25,7 +25,7 @@ def load_and_preprocess_data(file_path):
     df = df[['StrContent', 'StrTime', 'Remark']]
 
     # Rename Remark column to User
-    df = df.rename(columns={'Remark': 'User'})  # 注意：不要使用 inplace，使用重新赋值的方式
+    df = df.rename(columns={'Remark': 'User'}) 
 
     # Fill in missing values
     df['StrContent'] = df['StrContent'].fillna('')
@@ -67,13 +67,13 @@ def append_csv_files(file1, file2, output_file):
     """
     Append the contents of file1 and file2 and save the result to output_file.
     """
-    # 加载两个 CSV 文件
+    # Load the two CSV files
     df1 = pd.read_csv(file1)
     df2 = pd.read_csv(file2)
 
-    # 合并两个 DataFrame
+    # Combine the two DataFrames
     combined_df = pd.concat([df1, df2], ignore_index=True)
 
-    # 保存到新的输出文件
+    # Save to the new output file
     combined_df.to_csv(output_file, index=False)
     print(f"Files {file1} and {file2} have been combined and saved to {output_file}")

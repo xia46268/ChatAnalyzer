@@ -9,11 +9,11 @@ def batch_request_api(file_path, output_path, batch_size=100):
     """
     Perform sentiment analysis via API in batches and save intermediate results.
     """
-    # 加载并预处理数据
+    # Load and preprocess data
     df = load_and_preprocess_data(file_path)
-    df = df[df['MessageType'] == 'text']  # 只处理文本消息
+    df = df[df['MessageType'] == 'text']  # Only process text messages
 
-    # 初始化认证
+    # Initialize authentication
     auth_client = BaiduAuth()
     auth_client.load_access_token()
     if not auth_client.is_token_valid():
@@ -22,13 +22,13 @@ def batch_request_api(file_path, output_path, batch_size=100):
 
     results = []
 
-    # 逐批次处理数据，保存中间结果
+    # Process data in batches and save intermediate results
     for i in tqdm(range(0, len(df), batch_size), desc="Requesting Sentiment Analysis"):
         batch = df.iloc[i:i + batch_size]
 
         batch_results = []
 
-        # 对每条消息进行情感分析
+        # Perform sentiment analysis on each message
         for _, row in batch.iterrows():
             sentiment_result = analyze_sentiment(auth_client.access_token, row['StrContent'], retries=5, timeout=15)
             if sentiment_result:
@@ -45,10 +45,10 @@ def batch_request_api(file_path, output_path, batch_size=100):
 
         if batch_results:
             results.extend(batch_results)
-            # 打印每 100 条的一个结果
+            # Print one result from every 100 records
             print(f"Batch {i//batch_size + 1} Completed. Sample Result:\n{batch_results[0]}")
 
-            # 将每个批次的结果转换为 DataFrame 并保存为 CSV 文件
+            # Convert each batch's results to a DataFrame and save as a CSV file
             batch_df = pd.DataFrame(batch_results)
             if os.path.exists(output_path):
                 batch_df.to_csv(output_path, mode='a', header=False, index=False)
@@ -56,16 +56,14 @@ def batch_request_api(file_path, output_path, batch_size=100):
                 batch_df.to_csv(output_path, index=False)
             print(f"Batch {i//batch_size + 1} saved to {output_path}")
 
-    # 最终保存所有结果
+    # Save all results at the end
     if results:
         results_df = pd.DataFrame(results)
         results_df.to_csv(output_path, index=False)
         print(f"Analysis complete. Results saved to {output_path}")
 
 if __name__ == "__main__":
-    # 指定默认文件路径
-    input_file = "full_data.csv"  # 输入文件路径
-    output_file = "api_output.csv"  # 输出文件路径
+    # Specify default file paths
+    input_file = "full_data.csv"  
+    output_file = "api_output.csv"  
     batch_request_api(input_file, output_file)
-    
-
