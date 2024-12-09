@@ -1,0 +1,8 @@
+sphinx
+sphinx_rtd_theme
+myst-parser
+pandas
+matplotlib
+seaborn
+wordcloud
+jieba
