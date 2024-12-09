@@ -1,7 +1,10 @@
-version: 2 
+version: 2  # 配置版本
+build:
+  os: ubuntu-22.04  # 设置构建系统的操作系统版本
+  tools:
+    python: "3.8"  # 设置 Python 版本
 sphinx:
-  configuration: docs/source/conf.py  
+  configuration: docs/source/conf.py  # 指定 Sphinx 配置文件路径
 python:
-  version: 3.8  
   install:
-    - requirements: requirements.txt  
+    - requirements: requirements.txt  # 指定依赖文件路径
