@@ -105,7 +105,7 @@ Please save the obtained token to the `access_token.txt` file for future use.
 ---
 
 ## 使用指南 / Usage Guide
-(./ChatAnalyzer.png)
+![ChatAnalyzer Example](./ChatAnalyzer.png)
 
 ### 1. 选择模式 / Select Mode
 ChatAnalyzer 提供以下三种模式，用户可以根据需求选择不同的分析模式：
